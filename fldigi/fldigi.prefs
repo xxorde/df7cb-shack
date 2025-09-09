@@ -4,7 +4,7 @@
 
 [.]
 
-version:4.2.05
+version:4.2.06
 dual_channels:YES
 mode_name:RTTY
 squelch_enabled:1
@@ -20,12 +20,12 @@ wf_speed:2
 wf_reflevel:-40
 wf_ampspan:39
 noCATfreq:15040300
-noCATmode:RTTY
+noCATmode:USB
 noCATwidth:3000
-main_x:1279
-main_y:85
+main_x:2753
+main_y:87
 main_w:1280
-main_h:1355
+main_h:1353
 rx_text_height:76
 tiled_group_x:400
 show_channels:0
@@ -53,9 +53,9 @@ fsq_monitor_y:50
 fsq_monitor_w:600
 fsq_monitor_h:400
 tile_x:243
-tile_y:696
+tile_y:694
 tile_w:1280
-tile_h:909
+tile_h:907
 tile_y_ratio:0.767196
 fsq_ratio:0.470899
 ifkp_ratio:0.470899
@@ -79,8 +79,8 @@ quick_entry:0
 rx_scroll_hints:1
 rx_word_wrap:1
 tx_word_wrap:1
-logbook_x:3839
-logbook_y:85
+logbook_x:3780
+logbook_y:110
 logbook_w:1280
 logbook_h:1355
 logbook_reverse:0
@@ -89,7 +89,7 @@ logbook_col_1:103
 logbook_col_2:231
 logbook_col_3:275
 logbook_col_4:274
-logbook_col_5:286
+logbook_col_5:282
 dxdialog_x:50
 dxdialog_y:50
 dxdialog_w:625
@@ -194,7 +194,7 @@ int_wf_ampspan:7000
 int_viewer_psksq:300
 int_viewer_rttysq:-600
 int_viewer_cwsq:300
-int_tile_y_ratio:766
+int_tile_y_ratio:765
 int_fsq_ratio:470
 int_ifkp_ratio:470
 int_FMT_ref_freq:1500000
@@ -205,7 +205,7 @@ FMT_minutes:2
 vumeter_shown:1
 reverse:0
 noCATfreqH:0
-noCATfreqL:0
+noCATfreqL:28089420
 sqlevel:4
 sqlonoff:1
 afconoff:0

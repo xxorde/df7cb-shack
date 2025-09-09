@@ -97,21 +97,22 @@ TU 599 <MYCALL><LOG>\n
 //
 // Macro # 13
 /$ 12 CQ TEST
-<TX> CQ TEST <MYCALL> <MYCALL> CQ\n
+<TX>\n
+ CQ TEST <MYCALL> <MYCALL> CQ \n
 <RX>
 
 //
 // Macro # 14
 /$ 13 CALL 599
 <INCR><TX>\n
- <CALL> 599-<CNTR>-<CNTR> <CALL> \n
+ <CALL> 599 <CNTR> <CNTR> <CALL> \n
 <RX>
 
 //
 // Macro # 15
 /$ 14 TU CQ
 <LOG><GOHOME><TX>\n
- <CALL> TU <MYCALL> CQ\n
+ <CALL> TU <MYCALL> CQ \n
 <RX>
 
 //
@@ -132,14 +133,14 @@ TU 599 <MYCALL><LOG>\n
 // Macro # 18
 /$ 17 Log QSO
 <INCR><LNW><TX>\n
- TU 599-<CNTR>-<CNTR> <MYCALL> \n
+ TU 599 <CNTR> <CNTR> <MYCALL> \n
 <RX>
 
 //
 // Macro # 19
 /$ 18 599 agn
 <TX>\n
- DE <MYCALL> 599 <CNTR> <CNTR> <MYCALL> \n
+ <MYCALL> 599 <CNTR> <CNTR> <MYCALL> \n
 <RX>
 
 //

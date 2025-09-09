@@ -40,10 +40,6 @@ RSID minimum search bandwidth in Hertz -->
 Enable Reed Soloman ID decoding -->
 <RECEIVERSID>0</RECEIVERSID>
 
-<!-- type: RGBI; default: {255, 255, 255, 255}
-Color of RsID detection markers (RGBI) -->
-<RSIDCOLORS>255 255 255</RSIDCOLORS>
-
 <!-- type: bool; default: false
 Send RSID at beginning and end of transmission -->
 <TRANSMITRSID>0</TRANSMITRSID>
@@ -416,30 +412,6 @@ Limit AFC movement to this range (Hz) -->
 Acquisition S/N (dB) -->
 <PSKSERVERACGSN>9</PSKSERVERACGSN>
 
-<!-- type: Fl_Color; default: FL_BLACK
-Color for digi_scope background -->
-<digi_background>56</digi_background>
-
-<!-- type: Fl_Color; default: FL_WHITE
-Color for digi_scope axis -->
-<digi_axis_color>255</digi_axis_color>
-
-<!-- type: Fl_Color; default: FL_GREEN
-Color for digi_scope color 1 -->
-<digi_color_1>63</digi_color_1>
-
-<!-- type: Fl_Color; default: FL_YELLOW
-Color for digi_scope color 2 -->
-<digi_color_2>95</digi_color_2>
-
-<!-- type: Fl_Color; default: FL_CYAN
-Color for digi_scope color 3 -->
-<digi_color_3>223</digi_color_3>
-
-<!-- type: Fl_Color; default: FL_MAGENTA
-Color for digi_scope color 4 -->
-<digi_color_4>248</digi_color_4>
-
 <!-- type: int; default: 1
 1 - use Kahn power demodulator
 0 - use ATC (Kok Chen) demodulator -->
@@ -635,11 +607,11 @@ Filter bandwidth (Hz) -->
 
 <!-- type: double; default: 0.4
 Detector hysterisis, lower threshold -->
-<CWLOWER>0.712567</CWLOWER>
+<CWLOWER>27.2217</CWLOWER>
 
 <!-- type: double; default: 0.6
 Detector hysterisis, upper threshold -->
-<CWUPPER>0.739879</CWUPPER>
+<CWUPPER>18.2607</CWUPPER>
 
 <!-- type: int; default: 100
 Matched Filter length -->
@@ -1061,10 +1033,6 @@ Always transmit lowest tone at 500 Hz -->
 Always transmit centered at 1500 Hz (SHARES requirement) -->
 <MT63CENTERED>0</MT63CENTERED>
 
-<!-- type: int; default: 1
-0 - 1150 Hz, 1 - 1500 Hz, 2 - Variable -->
-<FSQFREQUENCY>1</FSQFREQUENCY>
-
 <!-- type: int; default: 4
 size of moving average filter for bin filtering
 value 2 to 8 -->
@@ -1138,18 +1106,6 @@ FSQ enable audit log file -->
 <!-- type: std::string; default: &quot;fsq_audit_log.txt&quot;
 FSQ audit log pathname -->
 <FSQ_AUDIT_LOG>fsq_audit_log.txt</FSQ_AUDIT_LOG>
-
-<!-- type: Fl_Color; default: FL_RED
-Color for FSQ xmt text -->
-<FSQXMTCOLOR>88</FSQXMTCOLOR>
-
-<!-- type: Fl_Color; default: FL_BLUE
-Color for FSQ directed text -->
-<FSQDIRECTEDCOLOR>216</FSQDIRECTEDCOLOR>
-
-<!-- type: Fl_Color; default: FL_DARK_GREEN
-Color for FSQ undirected text -->
-<FSQUNDIRECTEDCOLOR>60</FSQUNDIRECTEDCOLOR>
 
 <!-- type: bool; default: 1
 Add date-time stamp to each # type received message -->
@@ -1234,30 +1190,6 @@ Draw center line marker with 3x vertical lines -->
 <!-- type: bool; default: false
 Draw bandwidth marker with 3x vertical lines -->
 <USEWIDETRACKS>0</USEWIDETRACKS>
-
-<!-- type: RGBI; default: {255, 255, 0, 255}
-Color of cursor lines (RGBI) -->
-<CLCOLORS>255 255 0</CLCOLORS>
-
-<!-- type: RGBI; default: {255, 255, 255, 255}
-Color of cursor center line (RGBI) -->
-<CCCOLORS>255 255 255</CCCOLORS>
-
-<!-- type: RGBI; default: {255, 0, 0, 255}
-Color of bandwidth marker (RGBI) -->
-<BWTCOLORS>255 0 0</BWTCOLORS>
-
-<!-- type: RGBI; default: {255, 255, 255, 255}
-Color of notch marker (RGBI) -->
-<NOTCHCOLORS>255 255 255</NOTCHCOLORS>
-
-<!-- type: RGBI; default: {255, 120, 0, 255}
-Color of RTTY MARK freq marker (RGBI) -->
-<RTTYMARKRGBI>255 120 0</RTTYMARKRGBI>
-
-<!-- type: RGBI; default: {0, 255, 0, 255}
-Color of audio filter bandwidth (RGBI) -->
-<MONITORRGBI>0 255 0</MONITORRGBI>
 
 <!-- type: bool; default: false
 Draw bandwidth lines with 3x vertical lines -->
@@ -1670,6 +1602,18 @@ Tqsl station location for uploading records -->
 <!-- type: int; default: 15
 Tqsl trace file timeout in seconds -->
 <tracefile_timeout>15</tracefile_timeout>
+
+<!-- type: std::string; default: &quot;127.0.0.1&quot;
+IP Address of UDP broadcast socket -->
+<UDP_LOG_ADDRESS>127.0.0.1</UDP_LOG_ADDRESS>
+
+<!-- type: std::string; default: &quot;9876&quot;
+IP port number of UDP socket -->
+<UDP_LOG_PORT>9876</UDP_LOG_PORT>
+
+<!-- type: bool; default: false
+set TRUE to enable UDP broadcast of log record -->
+<ENABLE_UDP_LOGGING>0</ENABLE_UDP_LOGGING>
 
 <!-- type: bool; default: false
 Connect to MacLogger UDP server on 255.255.255.255 / 9932 -->
@@ -2105,7 +2049,7 @@ Nav config serial device -->
 
 <!-- type: std::string; default: &quot;&quot;
 Station callsign -->
-<MYCALL>DF7CB</MYCALL>
+<MYCALL>DF7C</MYCALL>
 
 <!-- type: std::string; default: &quot;&quot;
 Operator QTH -->
@@ -2253,7 +2197,7 @@ minimum -10.0, maximum + 10.0 -->
 
 <!-- type: std::string; default: &quot;&quot;
 Logbook file name -->
-<LOGBOOKFILENAME>/home/myon/.fldigi/logs/2024-10-16-rsgb-80m-df7c.adif</LOGBOOKFILENAME>
+<LOGBOOKFILENAME>/home/myon/.fldigi/logs/logbook.adif</LOGBOOKFILENAME>
 
 <!-- type: bool; default: 0
 Display read # recs and logbook name on program start -->
@@ -2275,14 +2219,6 @@ Send CW cut numbers -->
 clear logging fields upon transfer of CALL from Rx panel -->
 <CLEARFIELDS>1</CLEARFIELDS>
 
-<!-- type: RGB; default: {185, 211, 238}
-Background color of signal browser detect level -->
-<BWSRSLIDERCOLOR>185 211 238</BWSRSLIDERCOLOR>
-
-<!-- type: RGB; default: {54, 100, 139}
-Button highlight color, signal browser detect level -->
-<BWSRSLDRSELCOLOR>54 100 139</BWSRSLDRSELCOLOR>
-
 <!-- type: int; default: FL_RED
 View Browser highlight color 1, default Dark Red -->
 <BWSRHILIGHT1>88</BWSRHILIGHT1>
@@ -2302,14 +2238,6 @@ View Browser background odd lines -->
 <!-- type: int; default: FL_BLUE
 View Browser line select color -->
 <BWSRSELECT>216</BWSRSELECT>
-
-<!-- type: RGB; default: {255, 110, 180}
-Callsign background color when duplicate detected -->
-<dupcolor>255 110 180</dupcolor>
-
-<!-- type: RGB; default: {255, 255, 150}
-Callsign background color when possible duplicate detected -->
-<duppossiblecolor>255 255 150</duppossiblecolor>
 
 <!-- type: bool; default: true
 Check for duplicates (contest) -->
@@ -2498,22 +2426,6 @@ Fields separated by : character
 Lines separated by | character -->
 <DXCLUSTER_HOSTS>w3nr.ddns.net:7300::|dx.n8noe.us:7373::|w0mw.dynip.com:23::|</DXCLUSTER_HOSTS>
 
-<!-- type: RGB; default: { 0, 0, 130 }
-RX text font color (RGB) -->
-<DX_COLOR>0 0 130</DX_COLOR>
-
-<!-- type: Fl_Color; default: 7
-Even line background color in dxcluster dialog -->
-<DXC_EVEN_COLOR>7</DXC_EVEN_COLOR>
-
-<!-- type: Fl_Color; default: 246
-Odd line background color in dxcluster dialog -->
-<DXC_ODD_COLOR>246</DXC_ODD_COLOR>
-
-<!-- type: Fl_Color; default: FL_YELLOW
-Text color in dxcluster dialog -->
-<DXC_TEXTCOLOR>95</DXC_TEXTCOLOR>
-
 <!-- type: std::string; default: &quot;&quot;
 DX cluster browser font name -->
 <DXC_TEXTNAME>sans</DXC_TEXTNAME>
@@ -2525,14 +2437,6 @@ DX cluster browsers font number -->
 <!-- type: int; default: 14
 DX cluster browsers font size -->
 <DXC_TEXTSIZE>14</DXC_TEXTSIZE>
-
-<!-- type: Fl_Color; default: FL_YELLOW
-Text color in dxcluster stream -->
-<DXFONTCOLOR>95</DXFONTCOLOR>
-
-<!-- type: Fl_Color; default: FL_DARK_RED
-Alternate text color in dxcluster stream -->
-<DXALT_COLOR>72</DXALT_COLOR>
 
 <!-- type: std::string; default: &quot;&quot;
 DX cluster stream font name -->
@@ -2686,61 +2590,9 @@ Level for monitored (on waterfall) transmit signal -->
 Waterfall color palette file name -->
 <PALETTENAME>Palette: digipan.pal</PALETTENAME>
 
-<!-- type: RGB; default: { 0,0,0 }
-Custom palette 0 -->
-<PALETTE0>0 0 0</PALETTE0>
-
-<!-- type: RGB; default: { 0,0,136 }
-Custom palette 1 -->
-<PALETTE1>0 0 64</PALETTE1>
-
-<!-- type: RGB; default: { 0,19,198 }
-Custom palette 2 -->
-<PALETTE2>0 0 128</PALETTE2>
-
-<!-- type: RGB; default: { 0,32,239 }
-Custom palette 3 -->
-<PALETTE3>0 0 217</PALETTE3>
-
-<!-- type: RGB; default: { 172,167,105 }
-Custom palette 4 -->
-<PALETTE4>150 147 92</PALETTE4>
-
-<!-- type: RGB; default: { 194,198,49 }
-Custom palette 5 -->
-<PALETTE5>183 186 46</PALETTE5>
-
-<!-- type: RGB; default: { 225,228,107 }
-Custom palette 6 -->
-<PALETTE6>225 228 107</PALETTE6>
-
-<!-- type: RGB; default: { 255,255,0 }
-Custom palette 7 -->
-<PALETTE7>255 255 0</PALETTE7>
-
-<!-- type: RGB; default: { 251,51,0 }
-Custom palette 8 -->
-<PALETTE8>255 51 0</PALETTE8>
-
 <!-- type: bool; default: true
 Use macro group colors -->
 <USEGROUPCOLORS>1</USEGROUPCOLORS>
-
-<!-- type: RGB; default: { 80, 144, 144 }
-Macro group 1 color -->
-<FKEYGROUP1>80 144 144</FKEYGROUP1>
-
-<!-- type: RGB; default: { 144, 80, 80 }
-Macro group 2 color -->
-<FKEYGROUP2>144 80 80</FKEYGROUP2>
-
-<!-- type: RGB; default: { 80, 80, 144 }
-Macro group 3 color -->
-<FKEYGROUP3>80 80 144</FKEYGROUP3>
-
-<!-- type: RGB; default: { 255, 255, 255 }
-Macro button foreground  -->
-<FKEYTEXTCOLOR>255 255 255</FKEYTEXTCOLOR>
 
 <!-- type: std::string; default: &quot;UTF-8&quot;
 Default character set -->
@@ -2760,19 +2612,15 @@ Enable RX font warnings -->
 
 <!-- type: std::string; default: &quot;&quot;
 RX text font name -->
-<RXFONTNAME>DejaVu Sans</RXFONTNAME>
+<RXFONTNAME>Noto Sans Mono</RXFONTNAME>
 
 <!-- type: Fl_Font; default: FL_HELVETICA
 RX text font index -->
-<RXFONTNBR>51</RXFONTNBR>
+<RXFONTNBR>192</RXFONTNBR>
 
 <!-- type: int; default: 16
 RX text font size -->
 <RXFONTSIZE>16</RXFONTSIZE>
-
-<!-- type: Fl_Color; default: FL_BLACK
-RX text font color -->
-<RXFNTCOLOR>56</RXFNTCOLOR>
 
 <!-- type: std::string; default: &quot;&quot;
 Macro Btn Font Name -->
@@ -2786,73 +2634,21 @@ Macro Btn font index -->
 Macro btn font size -->
 <MACROBTNFONTSIZE>12</MACROBTNFONTSIZE>
 
-<!-- type: Fl_Color; default: FL_WHITE
-Macro btn font color -->
-<MACROBTNFONTCOLOR>255</MACROBTNFONTCOLOR>
-
-<!-- type: Fl_Color; default: FL_MAGENTA
-RX/TX text select color -->
-<RXTXSELCOLOR>248</RXTXSELCOLOR>
-
 <!-- type: bool; default: true
 Enable TX font warnings -->
 <TXFONTWARN>1</TXFONTWARN>
 
 <!-- type: std::string; default: &quot;&quot;
 TX text font name -->
-<TXFONTNAME>DejaVu Sans</TXFONTNAME>
+<TXFONTNAME>Noto Sans Mono</TXFONTNAME>
 
 <!-- type: Fl_Font; default: FL_HELVETICA
 TX text font index -->
-<TXFONTNBR>51</TXFONTNBR>
+<TXFONTNBR>192</TXFONTNBR>
 
 <!-- type: int; default: 16
 TX text font size -->
 <TXFONTSIZE>16</TXFONTSIZE>
-
-<!-- type: Fl_Color; default: FL_BLACK
-TX text font color -->
-<TXFNTCOLOR>56</TXFNTCOLOR>
-
-<!-- type: RGB; default: { 255, 242, 190 }
-RX text font color (RGB) -->
-<RXFONTCOLOR>255 242 190</RXFONTCOLOR>
-
-<!-- type: RGB; default: { 200, 235, 255 }
-TX text font color (RGB) -->
-<TXFONTCOLOR>200 235 255</TXFONTCOLOR>
-
-<!-- type: Fl_Color; default: FL_RED
-Color for Transmit text style -->
-<XMITCOLOR>88</XMITCOLOR>
-
-<!-- type: Fl_Color; default: FL_DARK_GREEN
-Color for Control text style -->
-<CTRLCOLOR>60</CTRLCOLOR>
-
-<!-- type: Fl_Color; default: FL_BLUE
-Color for Skipped text style -->
-<SKIPCOLOR>216</SKIPCOLOR>
-
-<!-- type: Fl_Color; default: FL_DARK_MAGENTA
-Color for Alternate text style -->
-<ALTRCOLOR>152</ALTRCOLOR>
-
-<!-- type: Fl_Color; default: FL_BLACK
-Color for low signal level -->
-<LOWSIGNAL>219</LOWSIGNAL>
-
-<!-- type: Fl_Color; default: FL_GREEN
-Color for normal signal level -->
-<NORMSIGNAL>63</NORMSIGNAL>
-
-<!-- type: Fl_Color; default: FL_YELLOW
-Color for high signal level -->
-<HIGHSIGNAL>95</HIGHSIGNAL>
-
-<!-- type: Fl_Color; default: FL_RED
-Color for over driven signal -->
-<OVERSIGNAL>88</OVERSIGNAL>
 
 <!-- type: std::string; default: &quot;&quot;
 Waterfall font name -->
@@ -2866,14 +2662,6 @@ Waterfall font number -->
 Waterfall font size -->
 <WATERFALLFONTSIZE>12</WATERFALLFONTSIZE>
 
-<!-- type: Fl_Color; default: FL_BLACK
-Text color in logging controls -->
-<LOGGINGTEXTCOLOR>56</LOGGINGTEXTCOLOR>
-
-<!-- type: Fl_Color; default: FL_BACKGROUND2_COLOR
-Background color in logging controls -->
-<LOGGINGCOLOR>7</LOGGINGCOLOR>
-
 <!-- type: std::string; default: &quot;&quot;
 LOGGING text font name -->
 <LOGGINGTEXTNAME>sans</LOGGINGTEXTNAME>
@@ -2885,14 +2673,6 @@ Logging Controls font number -->
 <!-- type: int; default: 12
 Logging Controls font size -->
 <LOGGINGTEXTSIZE>12</LOGGINGTEXTSIZE>
-
-<!-- type: Fl_Color; default: FL_BLACK
-Text color in logbook dialog -->
-<LOGBOOKTEXTCOLOR>56</LOGBOOKTEXTCOLOR>
-
-<!-- type: Fl_Color; default: FL_BACKGROUND2_COLOR
-Background color in logbook dialog -->
-<LOGBOOKCOLOR>7</LOGBOOKCOLOR>
 
 <!-- type: std::string; default: &quot;&quot;
 Logbook text font name -->
@@ -2926,46 +2706,10 @@ UI language -->
 Always show audio frequencies on waterfall -->
 <WFAUDIOSCALE>1</WFAUDIOSCALE>
 
-<!-- type: RGB; default: { 255, 253, 222 }
-Frequency display background color -->
-<FDBACKGROUND>255 253 222</FDBACKGROUND>
-
-<!-- type: RGB; default: { 0, 0, 0 }
-Frequency display foreground color -->
-<FDFOREGROUND>0 0 0</FDFOREGROUND>
-
-<!-- type: RGB; default: { 255, 253, 222 }
-S-meter background color -->
-<SMETERBG>255 253 222</SMETERBG>
-
-<!-- type: RGB; default: { 0, 0, 0 }
-S-meter scale color -->
-<SMETERSCALECOLOR>0 0 0</SMETERSCALECOLOR>
-
-<!-- type: RGB; default: { 0, 200, 0 }
-S-meter meter color -->
-<SMETERMETERCOLOR>0 200 0</SMETERMETERCOLOR>
-
-<!-- type: RGB; default: { 255, 253, 222 }
-Power meter background color -->
-<PWRMETERBGD>255 253 222</PWRMETERBGD>
-
-<!-- type: RGB; default: { 0, 0, 0 }
-Power meter scale color -->
-<PWRMETERSCALECOLOR>0 0 0</PWRMETERSCALECOLOR>
-
-<!-- type: RGB; default: { 200, 0, 0 }
-Power meter meter color -->
-<PWRMETERMETERCOLOR>200 0 0</PWRMETERMETERCOLOR>
-
 <!-- type: int; default: 4
 Power meter type:
  0: 25 W, 1: 50 W, 2: 100 W, 3: 200 W, 4: AUTO -->
 <PWRSELECT>4</PWRSELECT>
-
-<!-- type: Fl_Color; default: FL_BACKGROUND2_COLOR
-UI tabs color -->
-<TABSCOLOR>7</TABSCOLOR>
 
 <!-- type: bool; default: true
 Low frequency on bottom of viewer -->
@@ -3015,62 +2759,6 @@ Signal Viewer font index -->
 <!-- type: int; default: FL_NORMAL_SIZE
 Signal Viewer font size -->
 <VIEWERFONTSIZE>14</VIEWERFONTSIZE>
-
-<!-- type: Fl_Color; default: FL_YELLOW
-UI SQL button select color 1 -->
-<SQL1COLOR>95</SQL1COLOR>
-
-<!-- type: Fl_Color; default: FL_GREEN
-UI SQL button select color 2 -->
-<SQL2COLOR>63</SQL2COLOR>
-
-<!-- type: Fl_Color; default: FL_GREEN
-UI AFC button select color -->
-<AFCCOLOR>63</AFCCOLOR>
-
-<!-- type: Fl_Color; default: FL_GREEN
-UI Lk xmt frequ select color -->
-<LKCOLOR>63</LKCOLOR>
-
-<!-- type: Fl_Color; default: FL_GREEN
-UI Rev select color -->
-<REVCOLOR>63</REVCOLOR>
-
-<!-- type: Fl_Color; default: FL_RED
-UI T/R select color -->
-<XMTCOLOR>88</XMTCOLOR>
-
-<!-- type: Fl_Color; default: FL_GREEN
-UI Spot select color -->
-<SPOTCOLOR>63</SPOTCOLOR>
-
-<!-- type: Fl_Color; default: FL_GREEN
-UI RxID select color -->
-<RXIDCOLOR>63</RXIDCOLOR>
-
-<!-- type: Fl_Color; default: FL_DARK_RED
-UI RxID WIDE search select color -->
-<RXIDWIDECOLOR>72</RXIDWIDECOLOR>
-
-<!-- type: Fl_Color; default: FL_GREEN
-UI TxID select color -->
-<TXIDCOLOR>63</TXIDCOLOR>
-
-<!-- type: Fl_Color; default: FL_RED
-UI Tune select color -->
-<TUNECOLOR>88</TUNECOLOR>
-
-<!-- type: Fl_Color; default: FL_GREEN
-Default color of lighted buttons -->
-<DEFAULTBTNCOLOR>95</DEFAULTBTNCOLOR>
-
-<!-- type: Fl_Color; default: FL_YELLOW
-Default color of check buttons -->
-<DEFAULTCHECKBTNCOLOR>95</DEFAULTCHECKBTNCOLOR>
-
-<!-- type: Fl_Color; default: FL_GREEN
-Default color of round buttons -->
-<DEFAULTROUNDBTNCOLOR>63</DEFAULTROUNDBTNCOLOR>
 
 <!-- type: bool; default: false
 Try to open remote xml logbook -->
@@ -3505,11 +3193,11 @@ Disable, (default) -->
 
 <!-- type: std::string; default: &quot;&quot;
 Macro editor font name -->
-<MACROEDITORFONTNAME>sans</MACROEDITORFONTNAME>
+<MACROEDITORFONTNAME>DejaVu Sans Mono</MACROEDITORFONTNAME>
 
 <!-- type: Fl_Font; default: FL_HELVETICA
 RX text font index -->
-<MACROEDITFONTNBR>0</MACROEDITFONTNBR>
+<MACROEDITFONTNBR>48</MACROEDITFONTNBR>
 
 <!-- type: bool; default: false
 Use US units of distance for QRB -->
@@ -3639,26 +3327,6 @@ Enable DFT hardlimiter -->
 <!-- type: bool; default: false
 Enable DFT culling -->
 <FMT_dft_cull_on>0</FMT_dft_cull_on>
-
-<!-- type: Fl_Color; default: FL_BACKGROUND2_COLOR
-Color for FMT plot background -->
-<FMT_background>7</FMT_background>
-
-<!-- type: Fl_Color; default: FL_DARK_BLUE
-Color for FMT unknown data plot -->
-<FMT_unk_color>136</FMT_unk_color>
-
-<!-- type: Fl_Color; default: FL_GREEN
-Color for FMT reference data plot -->
-<FMT_ref_color>63</FMT_ref_color>
-
-<!-- type: Fl_Color; default: FL_BLACK
-Color for FMT legends -->
-<FMT_legend_color>56</FMT_legend_color>
-
-<!-- type: Fl_Color; default: FL_BLACK
-Color for FMT plot axis -->
-<FMT_axis_color>56</FMT_axis_color>
 
 <!-- type: bool; default: false
 Use TAB delimiters in exported csv file -->
