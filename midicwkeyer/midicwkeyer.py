@@ -22,31 +22,33 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import argparse
 import mido
 import time
 import pyaudio
+import pulsectl
 from itertools import chain
 import math
 import os
 
-#import serial
-#ser = serial.Serial()
-#ser.port = '/dev/ic7610b'
-#ser.rts = 0
-#ser.open()
+argparser = argparse.ArgumentParser(description="CW keyer with MIDI input, pyaudio output")
+argparser.add_argument("-m", "--midiport", default="MidiStomp MIDI 1", help="CW keyer MIDI device")
+argparser.add_argument("-c", "--controlport", default="DJControl Compact", help="Auxiliary MIDI device for speed control")
+argparser.add_argument("-w", "--wpm", type=int, default=24, help="CW speed in words per minute (PARIS, default 24)")
+argparser.add_argument("-p", "--pitch", type=int, default=850, help="CW pitch in Hz (default 850)")
+argparser.add_argument("-s", "--txserial", help="serial device to key RTS line on (default none)")
+argparser.add_argument("-t", "--txaudio", help="2nd audio output device (e.g. 'tx0, default none')")
+args = argparser.parse_args()
 
 # constants
 sample_rate = 48000.0
 ramp = 0.012 # at least 6ms ramp up/down (CWops recommendation)
-freq = 850.0
 volume = 100
 
 # global variables
-wpm = 24
 dah_sample = None
 dit_sample = None
 dot_duration = None
-controlport = None
 audiobuffer = []
 
 morse = {
@@ -116,19 +118,19 @@ def generate_sample(duration):
     for x in range(ramp_samples):
         audio.append(128+int(volume
                 * 0.5 * (1 - math.cos(math.pi * x / ramp_samples)) # cosine ramp up
-                * math.sin(2 * math.pi * freq * ( x / sample_rate ))))
+                * math.sin(2 * math.pi * args.pitch * ( x / sample_rate ))))
 
     for x in range(ramp_samples, ramp_samples+num_samples):
-        audio.append(128+int(volume * math.sin(2 * math.pi * freq * ( x / sample_rate ))))
+        audio.append(128+int(volume * math.sin(2 * math.pi * args.pitch * ( x / sample_rate ))))
 
     for x in range(ramp_samples):
         audio.append(128+int(volume
                 * 0.5 * (1 + math.cos(math.pi * x / ramp_samples)) # cosine ramp down
-                * math.sin(2 * math.pi * freq * ((ramp_samples+num_samples+x) / sample_rate))))
+                * math.sin(2 * math.pi * args.pitch * ((ramp_samples+num_samples+x) / sample_rate))))
 
     return audio
 
-def upload_samples(speed):
+def generate_samples(speed):
     global dot_duration, dit_sample, dah_sample
     dot_duration = 1.2 / speed # 1200ms/speed
 
@@ -152,9 +154,7 @@ def audio_callback0(in_data, frame_count, time_info, status_flags):
 def audio_callback1(in_data, frame_count, time_info, status_flags):
     return audio_callback(audiobuffer[1], in_data, frame_count, time_info, status_flags)
 
-def poll(midiport, paddles, blocking=False):
-    global wpm
-
+def poll(midiport, controlport, paddles, blocking=False):
     dit, dah = paddles[1], paddles[2]
 
     if blocking:
@@ -182,15 +182,15 @@ def poll(midiport, paddles, blocking=False):
             if msg.type == 'control_change' and msg.control == 0x3D: # VOLUME_B
                 wpm2 = round(6.0 + 42.0 * (msg.value / 127.0))
 
-    if wpm2 and wpm2 != wpm:
-        wpm = wpm2
-        print(f"<{wpm}>", end='', flush=True)
-        upload_samples(wpm)
+    if wpm2 and wpm2 != args.wpm:
+        args.wpm = wpm2
+        print(f"<{args.wpm}>", end='', flush=True)
+        generate_samples(args.wpm)
 
     # return True if paddle was pressed or held during this polling period
     return dit, dah
 
-def loop(midiport, audiobuffer, paddles):
+def loop(midiport, controlport, audiobuffer, paddles, txserial):
     state = 'idle'
     sign = '' # character keyed
     sign_len = 0 # size of partial character printed so far
@@ -204,10 +204,10 @@ def loop(midiport, audiobuffer, paddles):
             sign_len += 1
 
             now = time.time()
-            #ser.rts = 1
+            if txserial: txserial.rts = 1
             play_samples(audiobuffer, dit_sample)
             time.sleep(time.time() - now + dot_duration)
-            #ser.rts = 0
+            if txserial: txserial.rts = 0
             time.sleep(dot_duration)
 
         elif state == 'dah':
@@ -216,14 +216,14 @@ def loop(midiport, audiobuffer, paddles):
             sign_len += 1
 
             now = time.time()
-            #ser.rts = 1
+            if txserial: txserial.rts = 1
             play_samples(audiobuffer, dah_sample)
             time.sleep(time.time() - now + 3 * dot_duration)
-            #ser.rts = 0
+            if txserial: txserial.rts = 0
             time.sleep(dot_duration)
 
         # read paddle input
-        dit, dah = poll(midiport, paddles, False)
+        dit, dah = poll(midiport, controlport, paddles, False)
 
         # compute next state
         if state == 'idle':
@@ -245,7 +245,7 @@ def loop(midiport, audiobuffer, paddles):
 
                 # poll again for paddle input
                 ts = time.time()
-                dit, dah = poll(midiport, paddles, True)
+                dit, dah = poll(midiport, controlport, paddles, True)
                 delay = time.time() - ts
 
                 # if the delay was short enough, the last character was continued
@@ -295,25 +295,52 @@ def loop(midiport, audiobuffer, paddles):
             raise Exception("Bad state")
 
 def main():
-    midiport = mido.open_input('MidiStomp MIDI 1')
+    midiport = mido.open_input(args.midiport)
     midiport.iter_pending() # drain pending notes
 
-    global controlport
-    controlport = mido.open_input('DJControl Compact')
+    controlport = None
+    if args.controlport:
+        controlport = mido.open_input('DJControl Compact')
 
-    # side tone channel (default device)
-    pyaudio.PyAudio().open(format=pyaudio.paInt8, channels=1, rate=int(sample_rate), output=True, stream_callback=audio_callback0),
-    audiobuffer.append([])
-    # TX tone channel (tx0)
-    #pyaudio.PyAudio().open(format=pyaudio.paInt8, channels=1, rate=int(sample_rate), output=True, stream_callback=audio_callback1),
-    #audiobuffer.append([])
+    with pulsectl.Pulse("midicwkeyer-control") as pulse:
+
+        # side tone channel (default device)
+        # allocate audiobuffer for this stream
+        audiobuffer.append([])
+        sink_inputs = {x.index for x in pulse.sink_input_list()}
+        # open device with pyaudio
+        pyaudio.PyAudio().open(format=pyaudio.paInt8, channels=1, rate=int(sample_rate), output=True, stream_callback=audio_callback0),
+        # find my sink_input index using pulsectl
+        my_sink_input = {x.index for x in pulse.sink_input_list()} - sink_inputs
+        my_sink_input = my_sink_input.pop() # get (hopefully only) element from set
+        # move to default audio device
+        pulse.sink_input_move(my_sink_input, pulse.sink_default_get().index)
+
+        if args.txaudio:
+            # TX tone channel (tx0)
+            audiobuffer.append([])
+            sink_inputs = {x.index for x in pulse.sink_input_list()}
+            pyaudio.PyAudio().open(format=pyaudio.paInt8, channels=1, rate=int(sample_rate), output=True, stream_callback=audio_callback1),
+            tx_sink_input = {x.index for x in pulse.sink_input_list()} - sink_inputs
+            tx_sink_input = tx_sink_input.pop()
+            sinks = {x.name: x.index for x in pulse.sink_list()}
+            # move to TX audio device
+            pulse.sink_input_move(tx_sink_input, sinks[args.txaudio])
 
     paddles = { 1: False, 2: False }
 
-    upload_samples(wpm)
+    generate_samples(args.wpm)
+
+    txserial = None
+    if args.txserial:
+        import serial
+        txserial = serial.Serial()
+        txserial.port = args.serial
+        txserial.rts = 0
+        txserial.open()
 
     try:
-        loop(midiport, audiobuffer, paddles)
+        loop(midiport, controlport, audiobuffer, paddles, txserial)
     except KeyboardInterrupt:
         pass
 
