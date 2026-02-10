@@ -145,7 +145,7 @@ def audio_callback(buffer, in_data, frame_count, time_info, status_flags):
     samples = buffer[:frame_count]
     buffer[:] = buffer[frame_count:]
     if len(samples) < frame_count:
-        samples += [0 for x in range(frame_count - len(samples))]
+        samples += [128 for x in range(frame_count - len(samples))]
     return bytes(samples), pyaudio.paContinue
 
 def audio_callback0(in_data, frame_count, time_info, status_flags):
